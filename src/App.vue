@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { ref, Ref } from "vue";
 import { useGamesStore } from "./store/games";
+import { useUserStore } from "./store/users";
 const gameStore = useGamesStore();
 const addGame = () => {
   let newId;
@@ -26,10 +28,32 @@ const deleteSelected = () => {
     gameStore.unselectGame(item.id)
   }
 }
+//// users
+const usersStore = useUserStore();
+let userName:Ref<string> = ref('')
+let slogan:Ref<string> = ref('')
+
+let setUserInfo = () =>{
+  usersStore.setUser(userName.value);
+  usersStore.setSlogan(slogan.value);
+}
+
+console.log(gameStore.secretName)
 </script>
 
 <template>
   <div>
+    <div class="user">
+      <div class="user__name">
+        <input type="text" v-model="userName" placeholder="Username" />
+      </div>
+      <div class="user__slogan">
+        <input type="text" v-model="slogan" placeholder="Slogan"/>
+      </div>
+      <div>
+        <button @click="setUserInfo">SET</button>
+      </div>
+    </div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
@@ -62,6 +86,9 @@ const deleteSelected = () => {
 </template>
 
 <style scoped>
+.user{
+  margin-bottom: 20px;
+}
 .list {
   display: flex;
   flex-wrap: wrap;
